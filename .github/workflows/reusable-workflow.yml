@@ -29,7 +29,7 @@ jobs:
       - name: Determine approver
         id: approver
         run: |
-          # Map app-name to approver secret
+          # Map app-name to approver secret (GitHub usernames)
           if [ "${{ inputs.app-name }}" == "app-1" ]; then
             echo "approver=${{ secrets.TEST_APPROVER_1 }}" >> $GITHUB_OUTPUT
           elif [ "${{ inputs.app-name }}" == "app-2" ]; then
@@ -41,11 +41,13 @@ jobs:
       - name: Await approval
         uses: trstringer/manual-approval@v1
         with:
-          approvers: KrishnaPisupati05
+          approvers: ${{ steps.approver.outputs.approver }}
           minimum-approvals: 1
-          secret: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          secret: manual-approval-token          # just a string to track approval
           issue-title: "Approval required for ${{ inputs.app-name }}"
           issue-body: "Please approve this workflow to continue testing."
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}   # <- your PAT here
 
   build:
     runs-on: ubuntu-latest
