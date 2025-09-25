@@ -1,0 +1,18 @@
+name: Call Reusable SWA Test Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      app-name:
+        required: true
+        type: string
+      environment:
+        required: false
+        type: string
+
+jobs:
+  test-deploy:
+    uses: ./.github/workflows/reusable-workflow.yml
+    with:
+      app-name: ${{ github.event.inputs['app-name'] }}
+      environment: ${{ github.event.inputs['environment'] }}
