@@ -41,7 +41,7 @@ jobs:
       - name: Await approval
         uses: trstringer/manual-approval@v1
         with:
-          approvers: ${{ steps.approver.outputs.approver }}
+          approvers: KrishnaPisupati05
           minimum-approvals: 1
           secret: manual-approval-token       # required by the action
           issue-title: "Approval required for ${{ inputs.app-name }}"
