@@ -46,6 +46,8 @@ jobs:
           secret: manual-approval-token       # required by the action
           issue-title: "Approval required for ${{ inputs.app-name }}"
           issue-body: "Please approve this workflow to continue testing."
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
 
   build:
     runs-on: ubuntu-latest
