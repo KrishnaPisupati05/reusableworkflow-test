@@ -9,13 +9,7 @@ on:
       environment:
         required: false
         type: string
-    secrets:
-      TEST_APPROVER_1:
-        required: true
-      TEST_APPROVER_2:
-        required: true
-      DEFAULT_APPROVER:
-        required: true
+        
 
 jobs:
   validate:
