@@ -29,7 +29,7 @@ jobs:
         run: |
           # Map app-name to approver GitHub username (plain username)
           if [ "${{ inputs['app-name'] }}" == "app-1" ]; then
-            echo "approver=${{ TEST_APPROVER_1 }}" >> $GITHUB_OUTPUT
+            echo "approver=${{ secrets.TEST_APPROVER_1 }}" >> $GITHUB_OUTPUT
           elif [ "${{ inputs['app-name'] }}" == "app-2" ]; then
             echo "approver=AnotherUser" >> $GITHUB_OUTPUT
           else
