@@ -34,6 +34,7 @@ jobs:
             echo "approver=AnotherUser" >> $GITHUB_OUTPUT
           else
             echo "approver=DefaultUser" >> $GITHUB_OUTPUT
+          fi
 
       - name: Await approval
         uses: trstringer/manual-approval@v1
