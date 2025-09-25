@@ -1,0 +1,17 @@
+name: Deploy with Environment Approval
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: prod   # 👈 This must match your Environment name in Settings
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Simulate deployment
+        run: echo "Deploying to production..."
