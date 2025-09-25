@@ -9,7 +9,7 @@ on:
       environment:
         required: false
         type: string
-        
+
 
 jobs:
   validate:
@@ -36,6 +36,7 @@ jobs:
             echo "approver=${{ secrets.TEST_APPROVER_2 }}" >> $GITHUB_OUTPUT
           else
             echo "approver=${{ secrets.DEFAULT_APPROVER }}" >> $GITHUB_OUTPUT
+          fi
 
       - name: Await approval
         uses: trstringer/manual-approval@v1
