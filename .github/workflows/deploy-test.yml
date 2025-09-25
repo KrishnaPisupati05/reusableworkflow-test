@@ -13,3 +13,4 @@ jobs:
     uses: ./.github/workflows/reusable-workflow.yml
     with:
       app-name: app-1
+      environment: prod
