@@ -10,7 +10,6 @@ on:
         required: false
         type: string
 
-
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -30,6 +29,7 @@ jobs:
       - name: Determine approver
         id: approver
         run: |
+          # Map app-name to approver secret
           if [ "${{ inputs.app-name }}" == "app-1" ]; then
             echo "approver=${{ secrets.TEST_APPROVER_1 }}" >> $GITHUB_OUTPUT
           elif [ "${{ inputs.app-name }}" == "app-2" ]; then
@@ -43,6 +43,7 @@ jobs:
         with:
           approvers: ${{ steps.approver.outputs.approver }}
           minimum-approvals: 1
+          secret: manual-approval-token       # required by the action
           issue-title: "Approval required for ${{ inputs.app-name }}"
           issue-body: "Please approve this workflow to continue testing."
 
