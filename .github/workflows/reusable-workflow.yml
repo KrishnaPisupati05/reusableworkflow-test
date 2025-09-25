@@ -43,7 +43,6 @@ jobs:
         with:
           approvers: KrishnaPisupati05
           minimum-approvals: 1
-          secret: manual-approval-token       # required by the action
           secret: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           issue-title: "Approval required for ${{ inputs.app-name }}"
           issue-body: "Please approve this workflow to continue testing."
