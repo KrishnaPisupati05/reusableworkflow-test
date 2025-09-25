@@ -40,7 +40,7 @@ jobs:
         with:
           approvers: ${{ steps.approver.outputs.approver }}
           minimum-approvals: 1
-          secret: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          secret: ${{ secrets.GITHUB_TOKEN }}
           issue-title: "Approval required for ${{ inputs['app-name'] }}"
           issue-body: "Please approve this workflow to continue testing."
 
