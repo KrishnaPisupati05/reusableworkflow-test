@@ -40,11 +40,10 @@ jobs:
         with:
           approvers: KrishnaPisupati05
           minimum-approvals: 1
-          secret: "manual-approval-token"
+          secret: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           issue-title: "Approval required for ${{ inputs.app-name }}"
           issue-body: "Please approve this workflow to continue testing."
-        env:
-          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
 
   build:
     runs-on: ubuntu-latest
