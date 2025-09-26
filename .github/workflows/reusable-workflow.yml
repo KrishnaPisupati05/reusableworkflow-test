@@ -1,73 +1,62 @@
-name: Validate, Build & Deploy Static Web App
+name: Reusable Static Web App Deployment (Test Mode)
 
 on:
   workflow_call:
     inputs:
-      # Optional: app name, required only for production deployment
-      app_name:
+      app-name:
+        required: true
+        type: string
+      environment:
+        required: true
+        type: string
+      working-directory:
+        required: true
+        type: string
+        default: "./dummy"
+      node-version:
         required: false
         type: string
+        default: "18.x"
+      app-location:
+        required: true
+        type: string
+        default: "dummy-app"
+      output-location:
+        required: true
+        type: string
+        default: "dummy-build"
 
 jobs:
+
   validate:
-    name: Validate
+    name: Validate Build (Test Mode)
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Echo validation
-        run: |
-          echo "Validating application..."
-          echo "Simulated: npm install, lint, test"
+      - run: echo "Validate job: simulating build for ${{ inputs.app-name }}"
 
-  build-and-deploy:
-    name: Build & Deploy
+  approve:
+    name: Await Approval (Test Mode)
     needs: validate
     runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - run: echo "Approval required from reviewers configured in environment: ${{ inputs.environment }}"
 
-      - name: Set deployment slot
+  deploy:
+    name: Deploy Static Web App (Test Mode)
+    needs: [validate, approve]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine Slot
         id: slot
         run: |
-          if [[ "${GITHUB_REF}" == "refs/heads/main" ]] || \
-             [[ "${GITHUB_REF}" == "refs/heads/master" ]] || \
-             [[ "${GITHUB_REF}" == "refs/heads/production" ]] || \
-             [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+          if [[ "${GITHUB_REF_NAME}" == "main" || "${GITHUB_REF_NAME}" == "master" ]]; then
             echo "slot=production" >> $GITHUB_OUTPUT
-            echo "protected=true" >> $GITHUB_OUTPUT
-          elif [[ "${GITHUB_REF}" == "refs/heads/staging" ]]; then
+          else
             echo "slot=staging" >> $GITHUB_OUTPUT
-            echo "protected=false" >> $GITHUB_OUTPUT
-          else
-            echo "slot=dev" >> $GITHUB_OUTPUT
-            echo "protected=false" >> $GITHUB_OUTPUT
 
-      - name: Preview Deployment Slot
-        run: |
-          echo "----------------------------------------"
-          echo "Branch: ${GITHUB_REF##*/}"
-          echo "Event: ${GITHUB_EVENT_NAME}"
-          echo "Deployment slot: ${{ steps.slot.outputs.slot }}"
-          if [[ "${{ steps.slot.outputs.protected }}" == "true" ]]; then
-            echo "⚠️ Production deployment: approval required!"
-          else
-            echo "✅ Deployment will proceed automatically (no approval required)."
-          fi
-          echo "----------------------------------------"
+      - name: Echo Slot Name
+        run: echo "Deploying to slot: ${{ steps.slot.outputs.slot }}"
 
-      - name: Approval for production
-        if: steps.slot.outputs.protected == 'true'
-        environment: ${{ inputs.app_name }}-prod
-        run: echo "Approval received. Proceeding with production deployment..."
-
-      - name: Build App
-        run: |
-          echo "Building app for slot ${{ steps.slot.outputs.slot }}..."
-          echo "Simulated: npm run build"
-
-      - name: Deploy App
-        run: |
-          echo "Deploying app to slot ${{ steps.slot.outputs.slot }}..."
-          echo "Simulated: Azure Static Web Apps deploy"
+      - name: Simulate Deployment
+        run: echo "Simulating deployment of ${{ inputs.app-name }} to slot ${{ steps.slot.outputs.slot }}"
