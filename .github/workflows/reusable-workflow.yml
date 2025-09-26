@@ -55,7 +55,7 @@ jobs:
           echo "Approval required from reviewers configured in environment: ${{ inputs.environment }}"
 
   deploy:
-    name: Deploy Static Web App
+    name: Deploy Static Web app
     needs: [validate, approve]
     runs-on: ubuntu-latest
     steps:
