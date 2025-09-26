@@ -50,7 +50,8 @@ jobs:
       - name: Determine Slot
         id: slot
         run: |
-          if [[ "${GITHUB_REF_NAME}" == "main" || "${GITHUB_REF_NAME}" == "master" ]]; then
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          if [[ "$BRANCH_NAME" == "main" || "$BRANCH_NAME" == "master" ]]; then
             echo "slot=production" >> $GITHUB_OUTPUT
           else
             echo "slot=staging" >> $GITHUB_OUTPUT
