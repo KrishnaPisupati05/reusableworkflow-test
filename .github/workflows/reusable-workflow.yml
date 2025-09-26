@@ -9,22 +9,6 @@ on:
       environment:
         required: true
         type: string
-      working-directory:
-        required: true
-        type: string
-        default: "./dummy"
-      node-version:
-        required: false
-        type: string
-        default: "18.x"
-      app-location:
-        required: true
-        type: string
-        default: "dummy-app"
-      output-location:
-        required: true
-        type: string
-        default: "dummy-build"
 
 jobs:
 
@@ -32,7 +16,10 @@ jobs:
     name: Validate Build (Test Mode)
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Validate job: simulating build for ${{ inputs.app-name }}"
+      - name: Simulate Build
+        run: |
+          APP_NAME="${{ inputs.app-name }}"
+          echo "Validate job: simulating build for $APP_NAME"
 
   approve:
     name: Await Approval (Test Mode)
@@ -40,7 +27,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     steps:
-      - run: echo "Approval required from reviewers configured in environment: ${{ inputs.environment }}"
+      - run: |
+          echo "Approval required from reviewers configured in environment: ${{ inputs.environment }}"
 
   deploy:
     name: Deploy Static Web App (Test Mode)
@@ -57,7 +45,10 @@ jobs:
             echo "slot=staging" >> $GITHUB_OUTPUT
 
       - name: Echo Slot Name
-        run: echo "Deploying to slot: ${{ steps.slot.outputs.slot }}"
+        run: |
+          echo "Deploying to slot: ${{ steps.slot.outputs.slot }}"
 
       - name: Simulate Deployment
-        run: echo "Simulating deployment of ${{ inputs.app-name }} to slot ${{ steps.slot.outputs.slot }}"
+        run: |
+          APP_NAME="${{ inputs.app-name }}"
+          echo "Simulating deployment of $APP_NAME to slot ${{ steps.slot.outputs.slot }}"
