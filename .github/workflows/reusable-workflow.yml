@@ -85,4 +85,4 @@ jobs:
           app_location: ${{ inputs.app-location }}
           output_location: ${{ inputs.output-location }}
           skip_app_build: true
-          slot_name: ${{ steps.slot.outputs.slot }}
+          deployment_environment: ${{ steps.slot.outputs.slot }}   # production or staging
