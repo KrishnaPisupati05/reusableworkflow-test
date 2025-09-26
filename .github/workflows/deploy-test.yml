@@ -1,17 +1,17 @@
-name: Call reusable workflow
+name: Deploy App1
 
 on:
   push:
-    branches: [main]
-  workflow_dispatch:  
-
-permissions:
-  contents: read
-  issues: write   # Allow creating issues
+    branches:
+      - main
+      - master
+      - staging
+      - dev
+  workflow_dispatch:
 
 jobs:
-  call-reusable:
-    uses: ./.github/workflows/reusable-workflow.yml
+  deploy:
+    uses: flysastech/reusable-workflows/.github/workflows/deploy.yml@main
     with:
-      app-name: app-1
-      environment: prod
+      # Optional: only needed for production approval
+      # app_name: myapp
