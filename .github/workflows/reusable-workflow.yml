@@ -70,6 +70,7 @@ jobs:
             echo "slot=production" >> $GITHUB_OUTPUT
           else
             echo "slot=staging" >> $GITHUB_OUTPUT
+          fi
 
       - name: Echo Slot Name
         run: |
