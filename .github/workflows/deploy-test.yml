@@ -1,11 +1,14 @@
-name: Test Deploy
+name: Deploy App1
 
 on:
   workflow_dispatch:
 
 jobs:
-  call-reusable:
-    uses: ./.github/workflows/reusable-workflow.yml
+  deploy-app1:
+    uses: ./.github/workflows/reusable-staticwebapp.yml
     with:
       app-name: app1
-      environment: app1-test
+      environment: app1-test   # Approval environment set in GitHub
+      node-version: 18.x
+      app-location: frontend
+      output-location: build
