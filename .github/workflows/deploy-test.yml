@@ -10,7 +10,7 @@ on:
 
 jobs:
   call-reusable:
-    uses: .github/workflows/reusable-workflow.yml
+    uses: ./.github/workflows/reusable-workflow.yml
     with:
       app-name: app1
       environment: app1-test  # Environment configured with approvers
