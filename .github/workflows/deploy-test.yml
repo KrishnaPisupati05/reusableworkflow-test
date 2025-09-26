@@ -5,7 +5,7 @@ on:
 
 jobs:
   call-reusable:
-    uses: ./.github/workflows/reusable-workflow.yml@main
+    uses: ./.github/workflows/reusable-workflow.yml
     with:
       app-name: app1
       environment: app1-test
