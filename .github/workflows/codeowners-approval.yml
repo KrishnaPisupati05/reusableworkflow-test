@@ -1,32 +1,34 @@
-name: Enforce CODEOWNERS Approval
-
 on:
-  pull_request_review:
-    types: [submitted]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Select branch to deploy'
+        required: true
+        default: 'main'
+      deployment-environment:
+        description: 'Select GitHub Environment for approval'
+        required: true
+        type: choice
+        default: 'app1-test'
+        options:
+          - app1-test
+          - app1-prod
+          - app2-test
+          - app2-prod
+      promote-to-production:
+        description: 'Deploy to Production slot? (true/false)'
+        required: false
+        default: 'false'
 
 jobs:
-  validate-codeowners:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Get CODEOWNERS
-        id: codeowners
-        run: |
-          if [ ! -f .github/CODEOWNERS ]; then
-            echo "CODEOWNERS file not found!"
-            exit 1
-          fi
-          awk '{print $2}' .github/CODEOWNERS > codeowners_list.txt
-
-      - name: Validate Approval
-        if: github.event.review.state == 'approved'
-        run: |
-          APPROVER="${{ github.event.review.user.login }}"
-          CODEOWNERS=$(cat codeowners_list.txt)
-          if ! echo "$CODEOWNERS" | grep -qw "$APPROVER"; then
-            echo "❌ Approval by non-CODEOWNER: $APPROVER"
-            exit 1
-          else
-            echo "✅ Approval valid from CODEOWNER: $APPROVER"
+  deploy-app1:
+    uses: KrishnaPisupati05/reusable-workflow/.github/workflows/Reusable-workflow.yml@main
+    with:
+      branch: ${{ github.event.inputs.branch }}
+      environment: ${{ github.event.inputs.deployment-environment }}
+      app-name: app1
+      node-version: 18.x
+      app-location: app1/frontend
+      output-location: build
+      promote-to-production: ${{ github.event.inputs.promote-to-production }}
+    secrets: inherit
